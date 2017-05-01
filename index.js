@@ -1,10 +1,10 @@
 var p = Promise.resolve("Hello Promise!");
 
-p.then(function(message) {
-  setTimeout(function() {
-    console.log(message);
-  }, 1000)
-})
+// p.then(function(message) {
+//   setTimeout(function() {
+//     console.log(message);
+//   }, 1000)
+// })
 
 var delay = function(milliseconds) {
   return new Promise( function(resolve) {
@@ -23,15 +23,19 @@ var countDown = function(result) {
   }
 };
 
-delay(1000)
-  .then(countDown) //=> 1000
-  .then(countDown) //=> 900
-  .then(countDown) //=> 800
-  .then(countDown) //=> 700
-  .then(countDown) //=> 600
-  .then(countDown) //=> 500
-  .then(countDown) //=> 400
-  .then(countDown) //=> 300 
-  .then(countDown) //=> 200
-  .then(countDown) //=> 100
-  .then(countDown); //=> Done!
+var squared = function(num) {
+  return new Promise( function(resolve, reject) {
+    if (num) {
+      resolve(Math.pow(num, 2));
+    } else {
+      reject();
+    };
+  })
+}
+
+
+var promises = [1,2,3,4,5,6,7,8,9].map( function(i) {
+  return squared(i)
+})
+
+Promise.all(promises).then(function(result) {console.log(result)}).catch( function() { console.log('rejected')})
