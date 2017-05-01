@@ -33,9 +33,30 @@ var squared = function(num) {
   })
 }
 
-
 var promises = [1,2,3,4,5,6,7,8,9].map( function(i) {
   return squared(i)
 })
 
-Promise.all(promises).then(function(result) {console.log(result)}).catch( function() { console.log('rejected')})
+var doBadThing = function(forRealz) {
+ return new Promise( function(resolve, reject) {
+  if (!forRealz) {
+    resolve("Yay!");
+  } else {
+    reject('Nope');
+  }
+ })
+}
+
+doBadThing(null).then(function(result) {
+  console.log(result)
+  throw "error message"
+}).catch(function(error) {
+  console.error('lalal')
+})
+
+// doBadThing(true).then(function(result) {
+//   console.log(result)},
+//   function(err) {
+//     console.error(err)
+//   }
+// )
